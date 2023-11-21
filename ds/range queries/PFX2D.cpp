@@ -28,7 +28,6 @@ using namespace std;
 TODO: Verify
 */
 
-
 struct PFX2D {
 	vector<vector<int> > arr;
 	vector<vector<int> > pre;
@@ -42,6 +41,9 @@ struct PFX2D {
 		}
 	}
 	int RSQ(int x1, int y1, int x2, int y2) {
+		assert(0 <= x1 && 0 <= y1);
+		assert(x1 <= x2 && y1 <= y2);
+		assert(x2 < arr.size() && y2 < arr[0].size());
 		return pre[x2+1][y2+1] - pre[x2+1][y1] - pre[x1][y2+1] + pre[x1][y1];
 	}
 };
