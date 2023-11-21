@@ -13,8 +13,8 @@ using namespace std;
 
 /*
 0 indexed Range Sum Query
-- set(ind, val) sets the value at ind to val
-- rsq(l, r) returns the sum at [l,r]
+- set(ind, val) sets the value at ind to val in O(log n)
+- rsq(l, r) returns the sum at [l,r] in O(log n)
 Verified: https://judge.yosupo.jp/submission/173180
 */
 
