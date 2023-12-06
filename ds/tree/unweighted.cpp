@@ -1,55 +1,21 @@
-
 #include <algorithm>
-#include <array>
 #include <bitset>
 #include <cassert>
-#include <cctype>
-#include <cfenv>
-#include <cfloat>
-#include <chrono>
-#include <cinttypes>
-#include <climits>
 #include <cmath>
-#include <complex>
-#include <cstdarg>
-#include <cstddef>
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
 #include <deque>
-#include <fstream>
-#include <functional>
-#include <immintrin.h>
-#include <initializer_list>
-#include <iomanip>
-#include <ios>
 #include <iostream>
-#include <istream>
-#include <iterator>
-#include <limits>
-#include <list>
-#include <map>
-#include <memory>
-#include <new>
-#include <numeric>
-#include <ostream>
 #include <queue>
-#include <random>
 #include <set>
-#include <sstream>
 #include <stack>
-#include <streambuf>
-#include <string>
-#include <tuple>
-#include <type_traits>
-#include <variant>
+#include <vector>
 using namespace std;
+#define int long long
 
 /*
 Tree
 - initializes from vector of edges in O(nlogn)
 - performs lca in O(logn)
+not verified
 */
 
 struct tree {
@@ -95,11 +61,5 @@ struct tree {
 
 signed main() {
 	ios::sync_with_stdio(false); cin.tie(nullptr);
-	vector<pair<int,int> > a;
-	a.push_back(make_pair(0,1));
-	a.push_back(make_pair(0,2));
-	a.push_back(make_pair(1,3));
-	tree x(a);
-	cout<<x.lca(2,3);
 	return 0;
 }
