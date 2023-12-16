@@ -29,6 +29,7 @@ Weighted Graph
 - performs dijkstra in O(ElogV) (verified: https://cses.fi/problemset/hack/1671/entry/7941492/)
 - performs dijkstra in O(V^2) (semi-verified: https://cses.fi/problemset/result/7941658/)
 - performs kruskal in O(E * \alpha(V)) (verified: https://cses.fi/problemset/task/1675/)
+- performs floyd in O(V ^ 3) (verified: https://cses.fi/problemset/hack/1672/entry/7948543/)
 */
 
 struct graph {
@@ -91,6 +92,20 @@ struct graph {
 			d.unite(i.second.first, i.second.second);
 		}
 		return ans;
+	}
+	vector<vector<int> > floyd() {
+		vector<vector<int> > res(n, vector<int>(n, INF));
+		for (int i = 0; i < n; i++) res[i][i] = 0;
+		for (auto i : edg) res[i.second.first][i.second.second] = min(res[i.second.first][i.second.second], i.first);
+		for (auto i : edg) res[i.second.second][i.second.first] = min(res[i.second.second][i.second.first], i.first);
+		for (int k = 0; k < n; k++) {
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					res[i][j] = min(res[i][j], res[i][k] + res[k][j]);
+				}
+			}
+		}
+		return res;
 	}
 };
 
