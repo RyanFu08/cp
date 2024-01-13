@@ -18,12 +18,12 @@ using namespace std;
 not verified
 */
 
-struct m {
+struct RMXQ {
 	int len;
 	vector<int> segmx;
 	vector<int> segmn;
-	RMQ() {}
-	RMQ(int l) {
+	RMXQ() {}
+	RMXQ(int l) {
 		len = 1ll<<(int) (log2(l)+1);
 		segmx = vector<int>(2*len,-INF);
 		segmn = vector<int>(2*len,INF);
