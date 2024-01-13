@@ -12,14 +12,13 @@ using namespace std;
 #define int long long
 
 /*
-0 indexed Range Max/Min Query
+0 indexed Range Max Query
 - set(ind, val) sets the value at ind to val in O(log n)
-- rmnq(l, r) returns the min in [l,r] in O(log n)
 - rmxq(l, r) returns the min in [l,r] in O(log n)
 not verified
 */
 
-struct RMQ {
+struct m {
 	int len;
 	vector<int> segmx;
 	vector<int> segmn;
