@@ -18,6 +18,7 @@ KACTL
 
 struct FT {
 	vector<int> s;
+	FT() {}
 	FT(int n) : s(n) {}
 	void update(int pos, int dif) { // a[pos] += dif
 		for (; pos < s.size(); pos |= pos + 1) s[pos] += dif;
@@ -36,6 +37,26 @@ struct FT {
 				pos += pw, sum -= s[pos-1];
 		}
 		return pos;
+	}
+};
+
+struct RFT {
+	vector<int> s;
+	RFT() {}
+	RFT(int n) : s(n) {}
+	void add(int idx, int val) {
+	    for (++idx; idx < s.size(); idx += idx & -idx)
+	        s[idx] += val;
+	}
+	void range_add(int l, int r, int val) {
+	    add(l, val);
+	    add(r + 1, -val);
+	}
+	int point_query(int idx) {
+	    int ret = 0;
+	    for (++idx; idx > 0; idx -= idx & -idx)
+	        ret += s[idx];
+	    return ret;
 	}
 };
 
