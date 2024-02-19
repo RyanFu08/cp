@@ -13,72 +13,21 @@ using namespace std;
 
 /*
 0 indexed Range Sum Query
-initialize with root = node(arr, 0, sz(arr))
-set(l,r,v) sets range of [l,r) to v
-add(l,r,v) adds v to range [l,r)
-query(l,r) returns sum from [l,r)
-verified ish
+update(l,r,v) adds v to range [l,r]
+query(l,r) returns sum from [l,r]
+verified on spoj: https://www.spoj.com/status/ns=32641485
 */
 
-struct node {
-	node* lc = nullptr;
-	node* rc = nullptr;
-	int cl, cr;
-	int val = 0;
-	int tset = INF; //set tag
-	int tadd = 0; //add tag
-	node(int l, int r) {cl=l;cr=r;}
-	node(vector<int>& arr, int lo, int hi) {
-		cl = lo; cr = hi;
-		if (lo + 1 < hi)  {
-			int mid = cl + (cr-cl)/2;
-			lc = new node(arr, cl, mid);
-			rc = new node(arr, mid, cr);
-			val = lc->val + rc->val;
-		} else {val = arr[lo];}
-	}
-	void push() {
-		if (lc == nullptr) {
-			int mid = cl + (cr-cl)/2;
-			lc = new node(cl, mid);
-			rc = new node(mid, cr);
-		}
-		if (tset != INF) {
-			lc->set(cl, cl, tset);
-			rc->set(cr, cr, tset);
-			tset = INF;
-		} else if (tadd) {
-			lc->add(cl, cr, tadd);
-			rc->add(cl, cr, tadd);
-			tadd = 0;
-		}
-	}
-	void set(int ql, int qr, int v) {
-		if (qr <= cl || cr <= ql) return;
-		if (ql <= cl && cr <= qr) {tset = val = v; tadd = 0;}
-		else {
-			push(); lc->set(ql, qr, v); rc->set(ql, qr, v);
-			val = lc->val + rc->val;
-		}
-	}
-	void add(int ql, int qr, int v) {
-		if (qr <= cl || cr <= ql) return;
-		if (ql <= cl && cr <= qr) {
-			if (tset != INF) tset += v;
-			else tadd += v;
-			val += v;
-		} else {
-			push(); lc->add(ql, qr, v); rc->add(ql, qr, v);
-			val = lc->val + rc->val;
-		}
-	}
-	int query(int ql, int qr) {
-		if (qr <= cl || cr <= ql) return 0;
-		if (ql <= cl && cr <= qr) return val;
-		push();
-		return lc->query(ql, qr) + rc->query(ql, qr);
-	}
+struct SegmentTree {
+    int n; vector<int> tree, lazy;
+    SegmentTree(int size) : n(size), tree(4 * n), lazy(4 * n) {}
+    void propagate(int node, int start, int end) { if (lazy[node]) { tree[node] += (end - start + 1) * lazy[node]; if (start != end) { lazy[2 * node] += lazy[node]; lazy[2 * node + 1] += lazy[node]; } lazy[node] = 0; } }
+    void updateRange(int node, int start, int end, int l, int r, int val) { propagate(node, start, end); if (start > r || end < l) return; if (start >= l && end <= r) { tree[node] += (end - start + 1) * val; if (start != end) { lazy[2 * node] += val; lazy[2 * node + 1] += val; } return; } int mid = (start + end) / 2; updateRange(2 * node, start, mid, l, r, val); updateRange(2 * node + 1, mid + 1, end, l, r, val); tree[node] = tree[2 * node] + tree[2 * node + 1]; }
+    int queryRange(int node, int start, int end, int l, int r) { propagate(node, start, end); if (start > r || end < l) return 0; if (start >= l && end <= r) return tree[node]; int mid = (start + end) / 2; return queryRange(2 * node, start, mid, l, r) + queryRange(2 * node + 1, mid + 1, end, l, r); }
+    void update(int l, int r, int val) { updateRange(1, 0, n - 1, l, r, val); }
+    int query(int l, int r) { return queryRange(1, 0, n - 1, l, r); }
 };
+
 
 signed main() {
 	ios::sync_with_stdio(false); cin.tie(nullptr);
